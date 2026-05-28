@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeremy Schwenk</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F7F4EF;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:2rem 1rem}
+.outer{display:flex;flex-direction:column;align-items:center;width:100%;max-width:640px}
+.card{width:100%;background:#f0e8d0;border:3px solid #1a1a1a;border-radius:4px;overflow:hidden;box-shadow:5px 5px 0 #1a1a1a}
+.card-header{background:#1F4E79;color:#fff;padding:0.6rem 0.85rem;border-bottom:2px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between}
+.hdr-name{font-size:clamp(1rem,3vw,1.2rem);font-weight:700;letter-spacing:0.04em;text-transform:uppercase}
+.hdr-sub{font-size:clamp(0.58rem,1.5vw,0.68rem);font-weight:500;opacity:0.85;letter-spacing:0.04em;line-height:1.4;margin-top:0.1rem}
+.hdr-num{font-size:clamp(1.3rem,4vw,1.6rem);font-weight:700;opacity:0.45;font-family:'Lora',serif;padding-left:0.75rem}
+.card-body{display:flex;border-bottom:2px solid #1a1a1a}
+.card-photo{width:clamp(90px,18vw,120px);min-width:clamp(90px,18vw,120px);background:#c8bfa8;border-right:2px solid #1a1a1a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 0.4rem}
+.photo-img{width:clamp(64px,14vw,90px);height:clamp(64px,14vw,90px);border-radius:50%;border:2px solid #1a1a1a;object-fit:cover;object-position:center top;display:block}
+.photo-loc{font-size:clamp(0.52rem,1.2vw,0.62rem);color:#5a5040;letter-spacing:0.05em;text-transform:uppercase;text-align:center;line-height:1.4}
+.card-right{flex:1;display:flex;flex-direction:column;min-width:0}
+.section-nav{display:flex;border-bottom:2px solid #1a1a1a;background:#e8dfc5}
+.snav-btn{flex:1;font-size:clamp(0.6rem,1.5vw,0.68rem);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:0.38rem 0.25rem;text-align:center;cursor:pointer;color:#5a5040;border:none;background:transparent;border-right:1px solid #c8bfa8;transition:background 0.12s,color 0.12s}
+.snav-btn:last-child{border-right:none}
+.snav-btn.active{background:#1F4E79;color:#fff}
+.snav-btn:hover:not(.active){background:#ddd4b8;color:#1a1a1a}
+.hint{font-size:clamp(0.52rem,1.2vw,0.58rem);color:#8a7e6a;letter-spacing:0.06em;text-transform:uppercase;padding:0.2rem 0.5rem;background:#e8dfc5;border-bottom:1px solid #c8bfa8;text-align:right}
+.stats-table{width:100%;border-collapse:collapse;table-layout:fixed;display:none}
+.stats-table.visible{display:table}
+.stats-table thead tr{background:#2E6DA4}
+.stats-table thead th{color:#d4e8f7;font-size:clamp(0.55rem,1.3vw,0.62rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.3rem 0.5rem;text-align:left;border-right:1px solid #255d8e}
+.stats-table thead th:last-child{border-right:none}
+.stats-table tbody tr{border-bottom:1px solid #c8bfa8;transition:background 0.12s}
+.stats-table tbody tr:last-child{border-bottom:none}
+.stats-table tbody tr.clickable{cursor:pointer}
+.stats-table tbody tr.clickable:hover{background:#ddd4b8}
+.stats-table tbody tr.active{background:#1F4E79}
+.stats-table tbody tr.active td{color:#fff}
+.stats-table tbody tr.active .td-sub{color:#bcd4ec}
+.stats-table tbody tr.active .td-secondary{color:#bcd4ec}
+.stats-table tbody td{font-size:clamp(0.65rem,1.5vw,0.73rem);padding:0.32rem 0.5rem;color:#1a1a1a;border-right:1px solid #c8bfa8;vertical-align:middle}
+.stats-table tbody td:last-child{border-right:none}
+.td-primary{font-weight:700;display:block}
+.td-sub{font-size:clamp(0.56rem,1.1vw,0.63rem);color:#5a5040;display:block;margin-top:0.04rem}
+.td-secondary{color:#5a5040;font-size:clamp(0.62rem,1.3vw,0.68rem)}
+.td-tag{display:inline-block;background:#EBF1F8;border:1px solid #C5D9EE;color:#1F4E79;font-size:clamp(0.55rem,1.1vw,0.62rem);font-weight:600;padding:0.15rem 0.5rem;border-radius:100px;margin:0.1rem 0.15rem 0.1rem 0}
+.td-issuer{font-size:clamp(0.56rem,1.1vw,0.62rem);color:#888;font-style:italic}
+.card-bio{border-top:2px solid #1a1a1a;background:#e8dfc5;padding:0.65rem 0.85rem}
+.bio-org{font-size:clamp(0.58rem,1.3vw,0.65rem);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#1F4E79;margin-bottom:0.1rem}
+.bio-title{font-size:clamp(0.8rem,2vw,0.9rem);font-weight:700;color:#1a1a1a;margin-bottom:0.4rem}
+.bio-tabs{display:flex;gap:0.35rem;margin-bottom:0.4rem}
+.bio-tab{font-size:clamp(0.56rem,1.3vw,0.62rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.5rem;border:1.5px solid #1a1a1a;border-radius:2px;cursor:pointer;background:#f0e8d0;color:#1a1a1a;transition:background 0.12s}
+.bio-tab.active{background:#1F4E79;color:#fff;border-color:#1F4E79}
+.bio-content{font-size:clamp(0.7rem,1.6vw,0.77rem);line-height:1.65;color:#1a1a1a;min-height:52px}
+.bio-panel{display:none}
+.bio-panel.visible{display:block}
+.card-footer{background:#1F4E79;padding:0.4rem 0.85rem;display:flex;align-items:center;justify-content:space-between}
+.footer-left{display:flex;flex-direction:column;gap:0.15rem}
+.footer-brand{font-size:clamp(0.55rem,1.2vw,0.62rem);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#bcd4ec}
+.footer-email{font-size:clamp(0.52rem,1.1vw,0.6rem);color:#8eb8d8;letter-spacing:0.03em}
+.footer-certs{display:flex;gap:0.3rem;flex-wrap:wrap;justify-content:flex-end}
+.cert{background:#fff;color:#1F4E79;font-size:clamp(0.48rem,1vw,0.54rem);font-weight:700;padding:0.15rem 0.35rem;border-radius:2px;letter-spacing:0.04em}
+</style>
+</head>
+<body>
+<div class="outer">
+<div class="card">
+
+  <div class="card-header">
+    <div>
+      <div class="hdr-name">Jeremy Schwenk</div>
+      <div class="hdr-sub">Sports &amp; Live Event Technology Implementation &amp; Support Expert</div>
+    </div>
+    <div class="hdr-num">5</div>
+  </div>
+
+  <div class="card-body">
+    <div class="card-photo">
+      <img class="photo-img" src="data:image/jpeg;base64,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" alt="Jeremy Schwenk" />
+      <div class="photo-loc">Cedar Park, TX</div>
+    </div>
+    <div class="card-right">
+
+      <div class="section-nav">
+        <button class="snav-btn active" onclick="switchSection('career',this)">Career</button>
+        <button class="snav-btn" onclick="switchSection('edu',this)">Edu &amp; Certs</button>
+        <button class="snav-btn" onclick="switchSection('skills',this)">Skills</button>
+      </div>
+
+      <!-- CAREER -->
+      <div class="hint" id="hint-career">&#9664; select a role to explore</div>
+      <table class="stats-table visible" id="table-career">
+        <thead><tr>
+          <th style="width:35%">Organization</th>
+          <th style="width:43%">Position</th>
+          <th style="width:22%">Years</th>
+        </tr></thead>
+        <tbody>
+          <tr class="clickable active" onclick="selectJob('fifa',this)">
+            <td><span class="td-primary">FIFA</span></td>
+            <td class="td-secondary">Venue Technology Mgr</td>
+            <td class="td-secondary">2024–26</td>
+          </tr>
+          <tr class="clickable" onclick="selectJob('second',this)">
+            <td><span class="td-primary">Second Spectrum</span></td>
+            <td class="td-secondary">Venue Operations</td>
+            <td class="td-secondary">2021–24</td>
+          </tr>
+          <tr class="clickable" onclick="selectJob('catapult',this)">
+            <td><span class="td-primary">Catapult Sports</span></td>
+            <td class="td-secondary">Replay Support Lead</td>
+            <td class="td-secondary">2017–20</td>
+          </tr>
+          <tr class="clickable" onclick="selectJob('xos',this)">
+            <td><span class="td-primary">XOS Digital</span></td>
+            <td class="td-secondary">Instant Replay Support Tech</td>
+            <td class="td-secondary">2013–17</td>
+          </tr>
+          <tr class="clickable" onclick="selectJob('freelance',this)">
+            <td><span class="td-primary">Freelance AV</span></td>
+            <td class="td-secondary">Audio Visual Technician</td>
+            <td class="td-secondary">2010–13</td>
+          </tr>
+          <tr class="clickable" onclick="selectJob('kspr',this)">
+            <td><span class="td-primary">KSPR-TV</span></td>
+            <td class="td-secondary">Lead Production Operator</td>
+            <td class="td-secondary">2007–10</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- EDU & CERTS -->
+      <div class="hint" id="hint-edu" style="display:none">Credentials &amp; Education</div>
+      <table class="stats-table" id="table-edu">
+        <thead><tr>
+          <th style="width:40%">Credential</th>
+          <th style="width:38%">Issuer</th>
+          <th style="width:22%">Year</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="td-primary">PMP</span><span class="td-sub">Project Mgmt Professional</span></td>
+            <td class="td-issuer">Project Management Institute</td>
+            <td class="td-secondary">2026</td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">CWSA</span><span class="td-sub">Wireless Solutions Admin</span></td>
+            <td class="td-issuer">CWNP</td>
+            <td class="td-secondary">2022</td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">CWNA</span><span class="td-sub">Wireless Network Admin</span></td>
+            <td class="td-issuer">CWNP</td>
+            <td class="td-secondary">2022</td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">Network+</span><span class="td-sub">Networking Fundamentals</span></td>
+            <td class="td-issuer">CompTIA</td>
+            <td class="td-secondary">2018</td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">A+</span><span class="td-sub">IT Fundamentals</span></td>
+            <td class="td-issuer">CompTIA</td>
+            <td class="td-secondary">2016</td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">BS, Communications</span><span class="td-sub">Broadcast Journalism</span></td>
+            <td class="td-issuer">Missouri State Univ.</td>
+            <td class="td-secondary">2008</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- SKILLS -->
+      <div class="hint" id="hint-skills" style="display:none">Technical Skills</div>
+      <table class="stats-table" id="table-skills">
+        <thead><tr>
+          <th style="width:38%">Category</th>
+          <th style="width:62%">Skills</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="td-primary">Venue &amp; AV</span></td>
+            <td><span class="td-tag">AV Systems</span><span class="td-tag">IPTV</span><span class="td-tag">Digital Signage</span><span class="td-tag">Live Events</span></td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">Broadcast</span></td>
+            <td><span class="td-tag">EVS Replay</span><span class="td-tag">FFmpeg</span><span class="td-tag">SRT/NDI</span><span class="td-tag">Production</span></td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">Player Tracking</span></td>
+            <td><span class="td-tag">Optical Tracking</span><span class="td-tag">Camera Systems</span><span class="td-tag">API/XML</span></td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">Networking</span></td>
+            <td><span class="td-tag">RF/Wireless</span><span class="td-tag">Network Infra</span><span class="td-tag">Datadog</span></td>
+          </tr>
+          <tr>
+            <td><span class="td-primary">Cloud &amp; PM</span></td>
+            <td><span class="td-tag">AWS EC2</span><span class="td-tag">Project Mgmt</span><span class="td-tag">Zendesk</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="card-bio bio-panel visible" id="bio-panel">
+    <div class="bio-org" id="bio-org">FIFA — Club World Cup 2026™</div>
+    <div class="bio-title" id="bio-title">Venue Technology Manager</div>
+    <div class="bio-tabs">
+      <button class="bio-tab active" onclick="switchTab('duties',this)">Duties</button>
+      <button class="bio-tab" onclick="switchTab('accomplishments',this)">Accomplishments</button>
+    </div>
+    <div class="bio-content" id="bio-content">Led a technical support team and managed contracted technology vendors across all competition and non-competition venue areas, serving as the primary onsite point of contact for all technology operations at Club World Cup events.</div>
+  </div>
+
+  <div class="card-footer">
+    <div class="footer-left">
+      <span class="footer-brand">jeremyschwenk.com</span>
+      <span class="footer-email">mail@jeremyschwenk.com</span>
+    </div>
+    <div class="footer-certs">
+      <span class="cert">PMP</span>
+      <span class="cert">CWSA</span>
+      <span class="cert">CWNA</span>
+      <span class="cert">CompTIA</span>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const jobs={
+  fifa:{org:"FIFA — Club World Cup 2026™",title:"Venue Technology Manager",
+    duties:"Led a technical support team and managed contracted technology vendors across all competition and non-competition venue areas, serving as the primary onsite point of contact for all technology operations at Club World Cup events.",
+    accomplishments:"Oversaw end-to-end technology lifecycle from planning, design, and implementation through decommissioning — ensuring all network infrastructure, AV, and production systems were fully operational ahead of event days."},
+  second:{org:"Second Spectrum",title:"Venue Operations",
+    duties:"Deployed camera-based player and ball tracking systems across 30+ professional sports venues spanning NFL, NBA, G-League, and MLS facilities, managing end-to-end installation from site survey through commissioning.",
+    accomplishments:"Managed full hardware lifecycle on each deployment — achieving 100% on-time delivery across all installations. Traveled up to 50% annually across domestic and international markets."},
+  catapult:{org:"Catapult Sports",title:"Replay Support Lead",
+    duties:"Installed and commissioned instant replay and player tracking systems across NCAA football, hockey, and baseball venues, serving as the primary point of contact for new football customers from post-sale through go-live.",
+    accomplishments:"Managed end-to-end project delivery for large-scale temporary installations at NCAA Bowl games and March Madness tournaments, building project timelines and coordinating cabling contractors."},
+  xos:{org:"XOS Digital",title:"Instant Replay Support Technician",
+    duties:"Delivered on-call technical support during live games — including after-hours, holidays, and weekends — troubleshooting instant replay systems for NCAA facilities and providing rapid fixes to keep in-game operations running without interruption.",
+    accomplishments:"Managed issue documentation and resolution through Zendesk. Assisted the player tracking team with site surveys and installations at NFL and NBA facilities, broadening cross-functional expertise."},
+  freelance:{org:"Freelance AV — LMG / PSAV / AmericanAV",title:"Audio Visual Technician",
+    duties:"Provided AV production and technical support across live events, corporate productions, and broadcast projects. Operated and maintained audio, video, and lighting systems for a wide range of clients and venues.",
+    accomplishments:"Built a broad hands-on technical foundation across audio, video, and live event production — the bedrock of every sports technology role that followed."},
+  kspr:{org:"KSPR-TV — Springfield, MO",title:"Lead Production Operator",
+    duties:"Operated broadcast production equipment for live news and programming at ABC affiliate KSPR-TV. Responsibilities included studio camera operation, master control, and live production switching.",
+    accomplishments:"Gained foundational broadcast television experience at a network affiliate, developing core technical skills in live production that carry through to today."}
+};
+
+let currentJob='fifa', currentTab='duties';
+
+function switchSection(section, btn){
+  document.querySelectorAll('.snav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['career','edu','skills'].forEach(s=>{
+    document.getElementById('table-'+s).classList.toggle('visible', s===section);
+    document.getElementById('hint-'+s).style.display = s===section ? '' : 'none';
+  });
+  document.getElementById('bio-panel').classList.toggle('visible', section==='career');
+}
+
+function selectJob(key, row){
+  currentJob=key; currentTab='duties';
+  document.querySelectorAll('#table-career tbody tr').forEach(r=>r.classList.remove('active'));
+  row.classList.add('active');
+  document.querySelectorAll('.bio-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.bio-tab')[0].classList.add('active');
+  updateBio();
+}
+
+function switchTab(tab, btn){
+  currentTab=tab;
+  document.querySelectorAll('.bio-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  updateBio();
+}
+
+function updateBio(){
+  const j=jobs[currentJob];
+  document.getElementById('bio-org').textContent=j.org;
+  document.getElementById('bio-title').textContent=j.title;
+  document.getElementById('bio-content').textContent=currentTab==='duties'?j.duties:j.accomplishments;
+}
+</script>
+</body>
+</html>
